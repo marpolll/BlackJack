@@ -2,6 +2,7 @@ package com.marpol.blackj;
 
 import java.util.Scanner;
 
+
 import com.marpol.models.Dealer;
 import com.marpol.models.GamePlayer;
 import com.marpol.models.Player;
@@ -11,10 +12,13 @@ import com.marpol.utlis.Line;
 public class BlackJack {
 	private Deck deck;
 	private Scanner scanner;
+	private PrintSystem print;
+	private GameLogService log;
 
 	public BlackJack() {
 		deck = new Deck();
 		scanner = new Scanner(System.in);
+		print = new PrintSystem();
 	}
 
 	public void play() {
@@ -54,38 +58,40 @@ public class BlackJack {
 		while (true) {
 
 			System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
-			System.out.println(AnsiConsole.CYAN(Line.dollar(18)+"블랙잭 게임을 시작합니다"+Line.dollar(17)));
+			System.out.println(AnsiConsole.CYAN(Line.dollar(18) + "블랙잭 게임을 시작합니다" + Line.dollar(17)));
 			System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
-			
-			
+
 			if (deck.getDeckSize() <= 10) {
-				System.out.println(AnsiConsole.CYAN("덱의 매수가 10장 이하이므로 새로운 덱이 생성됩니다"));
+				System.out.println("덱의 매수가 10장 이하이므로 새로운 덱이 생성됩니다");
 				deck = new Deck();
 			}
 
-			// 플레이어가 카드를 뽑는다.
+			log = new GameLogService();
 			GamePlayer player = new Player();
 			GamePlayer dealer = new Dealer();
-			PrintSystem print = new PrintSystem();
 
+			log.resetLog();
+			// 플레이어 드로우
 			player.drawPlayerCard(deck.drawCard());
-			print.printProgress(player);
+			log.saveProgress(player);
 
+			// 플레이어 드로우
 			player.drawPlayerCard(deck.drawCard());
-			print.printProgress(player);
+			log.saveProgress(player);
 
+			// 딜러 드로우
 			dealer.drawPlayerCard(deck.drawCard());
-			print.printProgress(dealer);
+			log.saveProgress(dealer);
 
 			// 플레이어가 카드를 더 뽑을지 묻는다.
 			while (player.getPlayerScore() < 21) {
 				print.printTable(player, dealer);
 				System.out.println();
 				System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
-				System.out.print(AnsiConsole.BLUE("\t\t\t카드를 더 뽑으시겠습니까? (y/n) "));
+				System.out.print(AnsiConsole.BLUE("\t\t\t카드를 더 뽑으시겠습니까? (y/n) >> "));
 				String answer = scanner.nextLine();
 				System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
-				for(int i = 0 ; i < 10 ; i ++) {
+				for (int i = 0; i < 10; i++) {
 					System.out.println("");
 				}
 				try {
@@ -95,86 +101,48 @@ public class BlackJack {
 						continue;
 					} else if (answer.equals("y")) {
 						player.drawPlayerCard(deck.drawCard());
-						print.printProgress(player);
+						log.saveProgress(player);
 					} else if (answer.equals("n")) {
 						break;
 					}
 				} catch (Exception e) {
 					System.out.println(AnsiConsole.RED("\t\t\t y 또는 n 만 입력하세요"));
 				}
-				
-				}
-			
 
-			
+			}
+
 			// 딜러가 카드를 더 뽑는다.
 			while (dealer.getPlayerScore() < 17) {
 				dealer.drawPlayerCard(deck.drawCard());
-				print.printProgress(dealer);
+				log.saveProgress(dealer);
 			}
-			
+
 			// 결과를 비교한다.
-			if (player.getPlayerScore() > 21) {
-				print.printTable(player, dealer);
-				System.out.println();
-				System.out.println(AnsiConsole.YELLOW("\t\t     플레이어 점수 : " + player.getPlayerScore()) + 
-						AnsiConsole.PURPLE("\t 딜러 점수 : " + dealer.getPlayerScore()));
-				System.out.println();
-				System.out.println(AnsiConsole.RED("\t\t\t       플레이어 버스트"));
-				System.out.println();
-				System.out.println(AnsiConsole.RED("\t\t\t\t    패배"));
-			} else if (dealer.getPlayerScore() > 21) {
-				System.out.println();
-				System.out.println(AnsiConsole.YELLOW("\t\t     플레이어 점수 : " + player.getPlayerScore()) + 
-						AnsiConsole.PURPLE("\t 딜러 점수 : " + dealer.getPlayerScore()));
-				System.out.println("\t\t\t       딜러 버스트!");
-				System.out.println();
-				System.out.println(AnsiConsole.YELLOW("\t\t\t\t    승리!"));
-			} else if (player.getPlayerScore() > dealer.getPlayerScore()) {
-				print.printTable(player, dealer);
-				System.out.println();
-				System.out.println(AnsiConsole.YELLOW("\t\t     플레이어 점수 : "+ player.getPlayerScore()) + 
-						AnsiConsole.PURPLE("\t 딜러 점수 : " + dealer.getPlayerScore()));
-				System.out.println();
-				System.out.println(AnsiConsole.YELLOW("\t\t\t\t    승리"));
-			} else if (player.getPlayerScore() == dealer.getPlayerScore()) {
-				print.printTable(player, dealer);
-				System.out.println();
-				System.out.println(AnsiConsole.YELLOW("\t\t     플레이어 점수 : " + player.getPlayerScore()) + 
-						AnsiConsole.PURPLE("\t 딜러 점수 : " + dealer.getPlayerScore()));
-				System.out.println();
-				System.out.println(AnsiConsole.BLACK("\t\t\t\t    무승부"));
-			} else if (player.getPlayerScore() < dealer.getPlayerScore()) {
-				print.printTable(player, dealer);
-				System.out.println();
-				System.out.println(AnsiConsole.YELLOW("\t\t     플레이어 점수 : " + player.getPlayerScore()) + 
-						AnsiConsole.PURPLE("\t 딜러 점수 : " + dealer.getPlayerScore()));
-				System.out.println();
-				System.out.println(AnsiConsole.RED("\t\t\t\t    패배"));
-			}
+			print.printPlayResult(player, dealer);
 
 			// 다시 게임을 할지 묻는다.
 			while (true) {
 				System.out.println();
-				System.out.print(AnsiConsole.BLUE("\t\t\t게임을 다시 하겠습니까? (y/n)"));
+				System.out.print(AnsiConsole.BLUE("\t\t게임을 다시 하겠습니까? (y/n) 로그출력(l) >> "));
 				String answer = scanner.nextLine();
 				System.out.println();
 				try {
-					if (!answer.equals("y") && !answer.equals("n")) {
-						System.out.println(AnsiConsole.RED("\t\t\t     y 또는 n 만 입력하세요"));
+					if (!answer.equals("y") && !answer.equals("n") && !answer.equals("l")) {
+						System.out.println(AnsiConsole.RED("\t\t\t     'y' 또는 'n' 또는 'l'만 입력하세요"));
 						continue;
 					} else if (answer.equals("n")) {
 						System.out.println(AnsiConsole.BLUE("\t\t\t      게임을 종료합니다"));
 						return;
+					} else if (answer.equals("l")){
+						print.printGameLog();
 					} else {
 						break;
 					}
 				} catch (Exception e) {
-					System.out.println(AnsiConsole.RED("\t\t\t     y 또는 n 만 입력하세요"));
+					System.out.println(AnsiConsole.RED("\t\t\t     'y' 또는 'n' 또는 'l' 만 입력하세요"));
 					continue;
 				}
 			}
 		}
 	}
-
 }

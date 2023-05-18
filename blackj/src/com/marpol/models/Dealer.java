@@ -6,8 +6,8 @@ import java.util.List;
 import com.marpol.utlis.AnsiConsole;
 
 public class Dealer implements GamePlayer{
-private List<Card> cardList;
-//	private int cardCount;
+
+	private List<Card> cardList;
 private int score;
 private String name;
 

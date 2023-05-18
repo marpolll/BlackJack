@@ -2,79 +2,90 @@ package com.marpol.blackj;
 
 
 
+import java.util.List;
+
 import com.marpol.models.GamePlayer;
 import com.marpol.utlis.AnsiConsole;
 import com.marpol.utlis.Line;
 
 public class PrintSystem {
-	
-//	public void printCard(Card card) {
-//	String cardSuit = card.getSuit();
-//	String suit;
-//	if (cardSuit.equals("Spades")) {//스페이드
-//		suit = "♠";
-//	} else if (cardSuit.equals("Hearts")) {//하트
-//
-//	} else if (cardSuit.equals("Diamonds")) {//다이아
-//
-//	} else {//클로버
-//
-//	}
-//}
-public void printProgress(GamePlayer player) {
-	// 진행상황 출력
-//	System.out.print(player.getName() + "이(가) 뽑은 카드 ");
-//	Card drawCard = player.getPlayerCardList().get(player.getPlayerCardList().size() - 1);
-//	System.out.println(drawCard.getSuit() + drawCard.getRank());
-//
-//	// 뽑은 카드이미지 출력
-//	for (String image : drawCard.getCardImage()) {
-//		System.out.println(image);
-//	}
-//
-//	// 2장 이상 일경우
-//	if (player.getPlayerCardList().size() > 1) {
-//		System.out.println(player.getName() + "이(가) 현재까지 뽑은 카드 ");
-//		// 현재 총 뽑은카드
-//		for (Card card : player.getPlayerCardList()) {
-//			System.out.print(card.getSuit() + card.getRank() + "\t");
-//		}
-//		System.out.println();
-//		// 카드 이미지 출력
-//		for (int i = 0; i < 6; i++) {
-//			for (int j = 0; j < player.getPlayerCardList().size(); j++) {
-//				System.out.print(player.getPlayerCardList().get(j).getCardImage()[i] + "   ");
-//			}
-//			System.out.println();
-//		}
-//	}
-//	// 점수 출력
-//	System.out.println(player.getName() + "의 현재 점수 " + player.getPlayerScore() + " 점.");
-//	System.out.println();
-}
 
-public void printTable(GamePlayer player, GamePlayer dealer) {
-	
-	System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
-	System.out.println(AnsiConsole.PURPLE("\t\t\t     <딜러 테이블>  " + dealer.getPlayerScore()+"점"));
-	for (int i = 0; i < 6; i++) {
-		for (int j = 0; j < dealer.getPlayerCardList().size(); j++) {
-			System.out.print(dealer.getPlayerCardList().get(j).getCardImage()[i] + "   ");
+	// 진행 과정(로그) 출력 메서드
+	public void printGameLog() {
+
+		GameLogService logService = new GameLogService();
+		List<String> logList = logService.loadProgress();
+
+		for (String string : logList) {
+			System.out.println(string);
+		}
+	}
+
+	// 테이블 상황 출력 메서드
+	public void printTable(GamePlayer player, GamePlayer dealer) {
+
+		System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
+		System.out.println(AnsiConsole.PURPLE("\t\t\t     <딜러 테이블>  " + dealer.getPlayerScore()+"점"));
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < dealer.getPlayerCardList().size(); j++) {
+				System.out.print(dealer.getPlayerCardList().get(j).getCardImage()[i] + "   ");
+			}
+			System.out.println();
 		}
 		System.out.println();
-	}
-	System.out.println();
-	System.out.println(AnsiConsole.BLACK(Line.sLine(60)));
-	
-	for (int i = 0; i < 6; i++) {
-		for (int j = 0; j < player.getPlayerCardList().size(); j++) {
-			System.out.print(player.getPlayerCardList().get(j).getCardImage()[i] + "   ");
+		System.out.println(AnsiConsole.BLACK(Line.sLine(60)));
+
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < player.getPlayerCardList().size(); j++) {
+				System.out.print(player.getPlayerCardList().get(j).getCardImage()[i] + "   ");
+			}
+			System.out.println();
 		}
 		System.out.println();
+		System.out.println(AnsiConsole.YELLOW("\t\t\t   <플레이어 테이블>  " + player.getPlayerScore()+"점"));
+		System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
 	}
-	System.out.println();
-	System.out.println(AnsiConsole.YELLOW("\t\t\t   <플레이어 테이블>  " + player.getPlayerScore()+"점"));
-	System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
-}
+
+	// 결과 출력 메서드
+	public void printPlayResult(GamePlayer player, GamePlayer dealer) {
+		if (player.getPlayerScore() > 21) {
+			this.printTable(player, dealer);
+			System.out.println();
+			System.out.println(AnsiConsole.YELLOW("\t\t     플레이어 점수 : " + player.getPlayerScore()) +
+					AnsiConsole.PURPLE("\t 딜러 점수 : " + dealer.getPlayerScore()));
+			System.out.println();
+			System.out.println(AnsiConsole.RED("\t\t\t       플레이어 버스트"));
+			System.out.println();
+			System.out.println(AnsiConsole.RED("\t\t\t\t    패배"));
+		} else if (dealer.getPlayerScore() > 21) {
+			System.out.println();
+			System.out.println(AnsiConsole.YELLOW("\t\t     플레이어 점수 : " + player.getPlayerScore()) +
+					AnsiConsole.PURPLE("\t 딜러 점수 : " + dealer.getPlayerScore()));
+			System.out.println("\t\t\t       딜러 버스트!");
+			System.out.println();
+			System.out.println(AnsiConsole.YELLOW("\t\t\t\t    승리!"));
+		} else if (player.getPlayerScore() > dealer.getPlayerScore()) {
+			this.printTable(player, dealer);
+			System.out.println();
+			System.out.println(AnsiConsole.YELLOW("\t\t     플레이어 점수 : "+ player.getPlayerScore()) +
+					AnsiConsole.PURPLE("\t 딜러 점수 : " + dealer.getPlayerScore()));
+			System.out.println();
+			System.out.println(AnsiConsole.YELLOW("\t\t\t\t    승리"));
+		} else if (player.getPlayerScore() == dealer.getPlayerScore()) {
+			this.printTable(player, dealer);
+			System.out.println();
+			System.out.println(AnsiConsole.YELLOW("\t\t     플레이어 점수 : " + player.getPlayerScore()) +
+					AnsiConsole.PURPLE("\t 딜러 점수 : " + dealer.getPlayerScore()));
+			System.out.println();
+			System.out.println(AnsiConsole.BLACK("\t\t\t\t    무승부"));
+		} else if (player.getPlayerScore() < dealer.getPlayerScore()) {
+			this.printTable(player, dealer);
+			System.out.println();
+			System.out.println(AnsiConsole.YELLOW("\t\t     플레이어 점수 : " + player.getPlayerScore()) +
+					AnsiConsole.PURPLE("\t 딜러 점수 : " + dealer.getPlayerScore()));
+			System.out.println();
+			System.out.println(AnsiConsole.RED("\t\t\t\t    패배"));
+		}
+	}
 
 }
