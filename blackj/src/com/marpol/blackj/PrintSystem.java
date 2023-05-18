@@ -3,6 +3,8 @@ package com.marpol.blackj;
 
 
 import com.marpol.models.GamePlayer;
+import com.marpol.utlis.AnsiConsole;
+import com.marpol.utlis.Line;
 
 public class PrintSystem {
 	
@@ -53,9 +55,8 @@ public void printProgress(GamePlayer player) {
 
 public void printTable(GamePlayer player, GamePlayer dealer) {
 	
-	System.out.println("=".repeat(100));
-
-	System.out.println("<딜러 테이블>  " + dealer.getPlayerScore()+"점");
+	System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
+	System.out.println(AnsiConsole.PURPLE("\t\t\t     <딜러 테이블>  " + dealer.getPlayerScore()+"점"));
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < dealer.getPlayerCardList().size(); j++) {
 			System.out.print(dealer.getPlayerCardList().get(j).getCardImage()[i] + "   ");
@@ -63,7 +64,7 @@ public void printTable(GamePlayer player, GamePlayer dealer) {
 		System.out.println();
 	}
 	System.out.println();
-	System.out.println("-".repeat(100));
+	System.out.println(AnsiConsole.BLACK(Line.sLine(60)));
 	
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < player.getPlayerCardList().size(); j++) {
@@ -72,8 +73,8 @@ public void printTable(GamePlayer player, GamePlayer dealer) {
 		System.out.println();
 	}
 	System.out.println();
-	System.out.println("<플레이어 테이블>  " + player.getPlayerScore()+"점");
-	System.out.println("=".repeat(100));
+	System.out.println(AnsiConsole.YELLOW("\t\t\t   <플레이어 테이블>  " + player.getPlayerScore()+"점"));
+	System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
 }
 
 }

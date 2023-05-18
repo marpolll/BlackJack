@@ -3,6 +3,8 @@ package com.marpol.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.marpol.utlis.AnsiConsole;
+
 public class Dealer implements GamePlayer{
 private List<Card> cardList;
 //	private int cardCount;
@@ -14,9 +16,8 @@ public Dealer() {
 
 //		cardCount = 0;
 score = 0;
-name = "딜러";
+name = AnsiConsole.PURPLE("딜러");
 }
-
 // 카드 드로
 public void drawPlayerCard(Card card) {
 	cardList.add(card);

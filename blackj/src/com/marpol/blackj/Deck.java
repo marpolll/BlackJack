@@ -1,12 +1,14 @@
 package com.marpol.blackj;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
 
 import com.marpol.caim.CardImage;
 import com.marpol.caim.CardImageService;
 import com.marpol.models.Card;
+import com.marpol.utlis.AnsiConsole;
 
 public class Deck {
 	
@@ -69,15 +71,15 @@ public class Deck {
 		for (int i = 0; i < standardImges.length; i++) {
 
 			String standardImg = standardImges[i];
-
+			
 			if(card.getSuit().equals("클럽")) {
-				changeImges[i] = standardImg.replace("&", "♣");
+				changeImges[i] = (standardImg.replace("&", AnsiConsole.GREEN("♣")));
 			} else if(card.getSuit().equals("스페이드")) {
-				changeImges[i] = standardImg.replace("&", "♠");
+				changeImges[i] = (standardImg.replace("&", AnsiConsole.BLACK("♠")));
 			} else if(card.getSuit().equals("하트")) {
-				changeImges[i] = standardImg.replace("&", "♥");
+				changeImges[i] = (standardImg.replace("&", AnsiConsole.RED("♥")));
 			} else {
-				changeImges[i] = standardImg.replace("&", "◈");
+				changeImges[i] = (standardImg.replace("&", AnsiConsole.BLUE("◈")));
 			}
 		}
 
