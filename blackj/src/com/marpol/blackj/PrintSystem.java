@@ -61,9 +61,10 @@ public class PrintSystem {
 			System.out.println();
 			System.out.println(AnsiConsole.YELLOW("\t\t     플레이어 점수 : " + player.getPlayerScore()) +
 					AnsiConsole.PURPLE("\t 딜러 점수 : " + dealer.getPlayerScore()));
-			System.out.println("\t\t\t       딜러 버스트!");
 			System.out.println();
-			System.out.println(AnsiConsole.YELLOW("\t\t\t\t    승리!"));
+			System.out.println("\t\t\t 딜러 버스트");
+			System.out.println();
+			System.out.println(AnsiConsole.YELLOW("\t\t\t\t    승리"));
 		} else if (player.getPlayerScore() > dealer.getPlayerScore()) {
 			this.printTable(player, dealer);
 			System.out.println();

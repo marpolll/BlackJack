@@ -87,9 +87,12 @@ public class BlackJack {
 				print.printTable(player, dealer);
 				System.out.println();
 				System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
-				System.out.print(AnsiConsole.BLUE("\t\t\t카드를 더 뽑으시겠습니까? (y/n) >> "));
+				System.out.print(AnsiConsole.BLUE("\t\t     카드를 더 뽑으시겠습니까? (y/n) >> "));
 				String answer = scanner.nextLine();
 				System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
+		
+				
+				AnsiConsole.CLEAR();
 				
 				for (int i = 0; i < 10; i++) {
 					System.out.println("");
