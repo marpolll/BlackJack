@@ -4,12 +4,11 @@ import java.util.List;
 
 public interface GamePlayer {
 
-public void drawPlayerCard(Card card);
+	public void drawPlayerCard(Card card);
 
-public List<Card> getPlayerCardList();
+	public List<Card> getPlayerCardList();
 
-public int getPlayerScore();
+	public int getPlayerScore();
 
-public String getName();
-
+	public String getName();
 }

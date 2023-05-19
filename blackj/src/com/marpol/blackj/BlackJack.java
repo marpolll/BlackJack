@@ -2,7 +2,6 @@ package com.marpol.blackj;
 
 import java.util.Scanner;
 
-
 import com.marpol.models.Dealer;
 import com.marpol.models.GamePlayer;
 import com.marpol.models.Player;
@@ -91,6 +90,7 @@ public class BlackJack {
 				System.out.print(AnsiConsole.BLUE("\t\t\t카드를 더 뽑으시겠습니까? (y/n) >> "));
 				String answer = scanner.nextLine();
 				System.out.println(AnsiConsole.BLACK(Line.dLine(60)));
+				
 				for (int i = 0; i < 10; i++) {
 					System.out.println("");
 				}

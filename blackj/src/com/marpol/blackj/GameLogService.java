@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.marpol.models.Card;
+import com.marpol.models.GamePlayer;
 
 public class GameLogService {
 	
@@ -23,7 +24,7 @@ public class GameLogService {
 
 		public void resetLog() {
 			try {
-				os = new FileOutputStream("src/data/recentGameLog.txt");
+				os = new FileOutputStream("src/com/marpol/carddata/GameLog.txt");
 				out = new PrintWriter(os);
 
 
@@ -39,7 +40,7 @@ public class GameLogService {
 		public void saveProgress(GamePlayer player) {
 
 			try {
-				os = new FileOutputStream("src/data/recentGameLog.txt", true);
+				os = new FileOutputStream("src/com/marpol/carddata/GameLog.txt", true);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -83,7 +84,7 @@ public class GameLogService {
 
 		public List<String> loadProgress() {
 
-			String logFile = "src/data/recentGameLog.txt";
+			String logFile = "src/com/marpol/carddata/GameLog.txt";
 			FileInputStream is = null;
 			Scanner scan = null;
 

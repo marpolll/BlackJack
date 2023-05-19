@@ -18,7 +18,7 @@ public class CardImageService {
 	}
 
 	public void loadCardImage() {
-		String cardFile = "src/data/cardData.txt";
+		String cardFile = "src/com/marpol/carddata/card.txt";
 		InputStream is = null;
 		Scanner scan = null;
 
